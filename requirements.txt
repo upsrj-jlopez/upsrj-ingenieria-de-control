@@ -2,3 +2,4 @@ pytest
 control
 matplotlib
 pandas
+numpy

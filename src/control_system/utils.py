@@ -39,7 +39,14 @@ def normalize_filename(title: str) -> str:
         c for c in nfkd if not unicodedata.combining(c)
     )
 
-    return no_accents
+    # Eliminar caracteres inseguros: (),=., etc.
+    safe = re.sub(r'[()\=\.\[\]\{\},;]', '', no_accents)
+
+    # Opcional: reemplazar múltiples guiones bajos consecutivos por uno solo
+    safe = re.sub(r'_+', '_', safe)
+
+    return safe.strip('_')
+
 
 def equation_to_latex(equation: str) -> str:
     """

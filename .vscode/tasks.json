@@ -20,7 +20,7 @@
         {
             "label": "Run Tests",
             "type": "shell",
-            "command": "python",
+            "command": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "test/test_main.py"
             ],

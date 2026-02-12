@@ -43,7 +43,7 @@ def main():
         # 2. Calcular los valores de los parámetros R, C y Rf que definan
         #    el circuito. A partir de esos valores:
         #       - Determinar el polo dominante del sistema.
-        #       - Estimar el polo para los siguientes tiempos de establecimiento (ts): 1s, 3s, 5s
+        #       - Estimar el polo para los siguientes tiempos de establecimiento (ts): 0.1s, 0.2s, 0.3s
         #       - Registrar todos estos datos (R, C, Rf, ts, pole) en
         #         register.csv mediante add_entry().
         #

@@ -25,7 +25,7 @@ Y el tiempo de establecimiento aproximado es:
     - Recuerda que ![kirchoff](https://quicklatex.com/cache3/72/ql_0252f7079036deefdc19e695e0b8f972_l3.png)
     - Ejemplo: ![R](https://quicklatex.com/cache3/49/ql_39f78b994a50247aa89541bb8fe7cb49_l3.png) → ![I](https://quicklatex.com/cache3/37/ql_4f42a3e11e713ac95b8a40059ef1cd37_l3.png) 
 
-2. Calcula el polo deseado para un tiempo de establecimiento `ts=1s`, `ts=3s`, `ts=5s`:
+2. Calcula el polo deseado para un tiempo de establecimiento `ts=0.1s`, `ts=0.2s`, `ts=0.3s`:
    
     ![sd](https://quicklatex.com/cache3/86/ql_ee865a6a9eb38dcc1311121f381d9286_l3.png)
 
@@ -37,7 +37,7 @@ Y el tiempo de establecimiento aproximado es:
    
     ![transfer_function](https://quicklatex.com/cache3/76/ql_f30c214387d547ff185501bdef008e76_l3.png)
 
-5. Simula la respuesta al escalón con los distintos tiempos de establecimiento `ts=1s`, `ts=3s`, `ts=5s`.
+5. Simula la respuesta al escalón con los distintos tiempos de establecimiento `ts=0.1s`, `ts=0.2s`, `ts=0.3s`.
    - Genera una gráfica por cada caso.
    - Las tres gráficas deben estar en `build/out`.
 
