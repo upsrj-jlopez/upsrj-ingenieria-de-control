@@ -1,1 +1,4 @@
 pytest
+control
+matplotlib
+pandas
