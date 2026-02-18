@@ -53,7 +53,6 @@ def test_script_exists():
     assert os.path.isfile(SCRIPT), f"{RED}Script not found at {SCRIPT}{RESET}"
     print(f"{GREEN}Script found: {SCRIPT}{RESET}")
 
-
 def test_log_exists_and_content():
     print(">>> Checking if log file exists and has content...")
     assert os.path.isfile(LOG_PATH), f"{RED}Log file not found at {LOG_PATH}{RESET}"
@@ -63,34 +62,32 @@ def test_log_exists_and_content():
     print(f"{GREEN}Log file OK{RESET}")
     print(f"{BLUE}Log content:\n{content}{RESET}")
 
-
 def test_register_file():
     print(">>> Checking register.csv contents...")
     assert os.path.isfile(REGISTER), f"{RED}Register file not found at {REGISTER}{RESET}"
     df = pd.read_csv(REGISTER)
-    assert len(df) == 3, f"{RED}Register should have 3 rows, found {len(df)}{RESET}"
-    expected_cols = ["R", "C", "Rf", "ts", "pole"]
+    assert len(df) == 5, f"{RED}Register should have 5 rows, found {len(df)}{RESET}"
+    expected_cols = ["tau", "alpha", "ts", "pole"]
     assert all(col in df.columns for col in expected_cols), f"{RED}Missing columns in register.csv{RESET}"
-    print(f"{GREEN}Register file OK with 3 entries{RESET}")
+    print(f"{GREEN}Register file OK with 5 entries{RESET}")
     print(f"{BLUE}Register content:\n{df}{RESET}")
-
 
 def test_graphics_exist():
     print(">>> Checking if output graphics exist...")
     assert os.path.isdir(OUT_DIR), f"{RED}Output directory not found at {OUT_DIR}{RESET}"
     files = [f for f in os.listdir(OUT_DIR) if f.endswith(".png")]
-    assert len(files) >= 3, f"{RED}Expected at least 3 graphs, found {len(files)}{RESET}"
+    assert len(files) >= 5, f"{RED}Expected at least 5 graphs, found {len(files)}{RESET}"
     print(f"{GREEN}Found {len(files)} graphs in {OUT_DIR}{RESET}")
     print(f"{BLUE}Graphs:\n{files}{RESET}")
-
 
 def test_register_values():
     print(">>> Checking register.csv numerical values...")
     df = pd.read_csv(REGISTER)
 
-    # Validar que los ts sean exactamente 0.1, 0.2, 0.3
-    ts_values = df["ts"].tolist()
-    assert sorted(ts_values) == [0.1, 0.2, 0.3], f"{RED}Unexpected ts values: {ts_values}{RESET}"
+    # Validar que los ts sean exactamente 300, 600, 900, 1200, 1500 (segundos)
+    ts_values = sorted(df["ts"].tolist())
+    expected_ts = [300, 600, 900, 1200, 1500]
+    assert ts_values == expected_ts, f"{RED}Unexpected ts values: {ts_values}{RESET}"
 
     # Validar que los polos correspondan a la relación ts ≈ 4/|pole|
     for _, row in df.iterrows():
@@ -101,24 +98,19 @@ def test_register_values():
             f"{RED}Pole mismatch for ts={ts}: expected {expected_pole}, got {pole}{RESET}"
         )
 
-        # Validar que R, C y Rf sean realistas
-        R, C, Rf = row["R"], row["C"], row["Rf"]
+        # Validar que tau y alpha sean realistas
+        tau, alpha = row["tau"], row["alpha"]
 
-        # R debe ser positivo y mayor a 500 Ω (limitación de corriente 5V/10mA)
-        assert R >= 500, f"{RED}R unrealistically small: {R} Ω{RESET}"
+        # tau debe ser positivo y en rango típico (>= 10 s y <= 2000 s)
+        assert 10 <= tau <= 2000, f"{RED}tau unrealistic: {tau} s{RESET}"
 
-        # C debe ser positivo y en rango típico (>= 1e-9 F y <= 1 F)
-        assert 1e-9 <= C <= 1, f"{RED}C unrealistic: {C} F{RESET}"
-
-        # Rf debe ser positivo y no exageradamente grande (ej. <= 10 MΩ)
-        assert 0 < Rf <= 1e7, f"{RED}Rf unrealistic: {Rf} Ω{RESET}"
+        # alpha debe ser positivo y razonable (0 <= alpha <= 1)
+        assert 0 <= alpha <= 1, f"{RED}alpha unrealistic: {alpha}{RESET}"
 
     print(f"{GREEN}Register values OK (poles and parameters are realistic){RESET}")
 
-
 if __name__ == "__main__":
     try:
-
         test_script_exists()
         run_main()
         test_log_exists_and_content()

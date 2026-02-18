@@ -56,6 +56,32 @@ def rc_feedback(R=1.0, C=1.0, Rf=1.0):
 
     return ctrl.TransferFunction(num, den)
 
+def greenhouse_temp(tau=100.0, alpha=0.1):
+    """
+    Función de transferencia para la dinámica térmica de un invernadero.
+    F(s) = 1 / (tau*s + 1 + alpha)
+
+    Parameters
+    ----------
+    tau : float
+        Constante de tiempo térmica (segundos).
+        Relacionada con la masa de aire, calor específico y coeficiente de pérdidas.
+    alpha : float
+        Factor de pérdidas adicionales (adimensional).
+        Representa ventilación, fugas o disipación extra.
+
+    Returns
+    -------
+    control.TransferFunction
+        Función de transferencia del sistema térmico del invernadero.
+    """
+    import control as ctrl
+
+    num = [1]
+    den = [1]
+
+    return ctrl.TransferFunction(num, den)
+
 def second_order(wn=1.0, zeta=0.5):
     """
     Genera una función de transferencia de segundo orden:

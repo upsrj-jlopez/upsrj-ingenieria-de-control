@@ -14,7 +14,7 @@ import os
 import config
 from logger import set_logger, get_logger, plogger
 from logging import ERROR, INFO
-from control_system.plant import first_order, rc_feedback
+from control_system.plant import greenhouse_temp
 from control_system.simulation import simulate_system
 from control_system.register import init_register, add_entry
 
@@ -36,19 +36,16 @@ def main():
         plogger("Simulando distintas respuestas al escalón...")
 
         # TODO:
-        # 1. Modificar la función rc_feedback() en control_system/plant.py
-        #    para que construya la función de transferencia indicada:
-        #    F(s) = 1 / (RCs + 1 + (R/Rf))
-        #
-        # 2. Calcular los valores de los parámetros R, C y Rf que definan
-        #    el circuito. A partir de esos valores:
-        #       - Determinar el polo dominante del sistema.
-        #       - Estimar el polo para los siguientes tiempos de establecimiento (ts): 0.1s, 0.2s, 0.3s
-        #       - Registrar todos estos datos (R, C, Rf, ts, pole) en
-        #         register.csv mediante add_entry().
-        #
-        G = rc_feedback()
-        simulate_system(G, "Circuito RC con retroalimentación: F(s) = 1/(RCs + 1 + (R/Rf))")
+        # 1. Declara la función greenhouse_temp() en plant.py para construir la función de transferencia:
+        #       F(s)= 1 / ((tau * s) + 1 + alpha)
+        # 2. Calcular tau  a partir de la masa de aire, calor específico y coeficiente de pérdidas del 
+        #    invernadero de acrílico que diseñaron.
+        # 3. Proponer alpha  según el nivel de ventilación o fugas de su proyecto.
+        # 4. Determinar el polo dominante y estimar los tiempos de establecimiento para t_s=300s, 600s, 900s, 1200s, 1500s.
+        # 5. Registrar todos estos datos (tau ,alpha ,t_s,p) en register.csv.
+
+        G = greenhouse_temp()
+        simulate_system(G, "Modelo térmico de invernadero: F(s) = 1/(tau*s + 1 + alpha)")
 
         init_register()
         add_entry()
